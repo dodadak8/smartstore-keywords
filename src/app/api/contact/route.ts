@@ -9,9 +9,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-// Resend 초기화
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 // Rate limiting을 위한 Map (실제 프로덕션에서는 Redis 사용 권장)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
@@ -133,6 +130,9 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Resend 초기화 (런타임에 실행)
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     // 카테고리 한글 변환
     const categoryLabels: { [key: string]: string } = {
