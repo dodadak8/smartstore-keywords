@@ -302,8 +302,26 @@ export default function ChecklistPage() {
   };
 
 
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // 마우스 트래킹
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [loadKeywords]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 relative overflow-hidden">
+      {/* 마우스 따라다니는 그라디언트 */}
+      <div
+        className="fixed inset-0 opacity-30 pointer-events-none z-0"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15), transparent 70%)`
+        }}
+      />
       {/* 네비게이션 */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 backdrop-blur-xl border-b border-white/20 shadow-lg">
         <div className="container mx-auto px-4 sm:px-6">
@@ -377,7 +395,7 @@ export default function ChecklistPage() {
         </div>
       </nav>
 
-      <main className="container mx-auto px-6 py-8" style={{paddingTop: '100px'}}>
+      <main className="relative z-10 container mx-auto px-4 py-8" style={{paddingTop: '100px'}}>
         {/* 페이지 헤더 */}
         <div className="text-center mb-12">
           <h1
@@ -393,13 +411,11 @@ export default function ChecklistPage() {
           </p>
         </div>
 
-        <div className="py-12">
-
         <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* 왼쪽: 체크리스트 */}
           <div className="lg:col-span-2 space-y-6">
             {/* 자동 검증 버튼 */}
-            <div className="bg-white rounded-2xl border border-gray-200/50 p-8 shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl hover:bg-white/90 transition-all duration-300">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mr-4">
@@ -828,7 +844,6 @@ export default function ChecklistPage() {
               </div>
             </div>
           </div>
-        </div>
         </div>
       </main>
     </div>

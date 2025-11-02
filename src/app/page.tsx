@@ -235,33 +235,33 @@ export default function Home() {
                 </div>
 
                 {/* 메인 콘텐츠 */}
-                <div className="relative z-10 text-center px-4 py-32 max-w-5xl mx-auto">
+                <div className="relative z-10 text-center px-4 py-20 sm:py-32 max-w-5xl mx-auto">
                   {/* 로고 아이콘 */}
-                  <div className="flex justify-center mb-12">
+                  <div className="flex justify-center mb-8 sm:mb-12">
                     <div className="relative">
-                      <div className={`w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br ${banner.gradient} rounded-3xl shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300`}>
-                        <svg className="w-16 h-16 md:w-20 md:h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className={`w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gradient-to-br ${banner.gradient} rounded-3xl shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300`}>
+                        <svg className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                       </div>
                       {/* 장식 요소 */}
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-pulse"></div>
+                      <div className="absolute -top-2 -right-2 w-4 h-4 sm:w-6 sm:h-6 bg-yellow-400 rounded-full animate-pulse"></div>
                     </div>
                   </div>
 
                   {/* 메인 카피 */}
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
                     {banner.title}
                   </h1>
 
-                  <p className="text-2xl md:text-4xl font-bold mb-4">
+                  <p className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-4 px-2">
                     <span className={`bg-gradient-to-r ${banner.gradient} bg-clip-text text-transparent`}>
                       {banner.subtitle}
                     </span>
                     {index === 0 && <span className="text-gray-900">에서 차근차근 배워가세요.</span>}
                   </p>
 
-                  <p className="text-lg md:text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
+                  <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-12 max-w-3xl mx-auto px-4">
                     {banner.description}
                   </p>
 
