@@ -554,8 +554,9 @@ export default function CategoryPage() {
             )}
           </div>
         </div>
+        </div>
       </main>
-      
+
       <style jsx global>{`
         .custom-scrollbar {
           scrollbar-width: thin;

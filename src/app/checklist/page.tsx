@@ -829,6 +829,7 @@ export default function ChecklistPage() {
             </div>
           </div>
         </div>
+        </div>
       </main>
     </div>
   );
