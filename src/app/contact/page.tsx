@@ -143,14 +143,38 @@ export default function ContactPage() {
       setLoading(true);
       setErrors({});
 
-      // 실제 환경에서는 여기서 서버 API를 호출
-      // 현재는 시뮬레이션
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // 서버 API 호출
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          category: form.category,
+          subject: form.subject,
+          message: form.message,
+          honeypot: form.honeypot,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // 서버에서 에러 반환
+        if (data.errors && Array.isArray(data.errors)) {
+          setErrors({ submit: data.errors.join(', ') });
+        } else {
+          setErrors({ submit: data.error || '문의 전송에 실패했습니다.' });
+        }
+        return;
+      }
 
       // 성공 처리
       setSubmitted(true);
       setLastSubmitTime(Date.now());
-      
+
       // 폼 초기화
       setForm({
         name: '',
@@ -161,7 +185,7 @@ export default function ContactPage() {
         honeypot: ''
       });
 
-      // 로컬 스토리지에 문의 내역 저장 (실제 환경에서는 서버에 저장)
+      // 로컬 스토리지에 문의 내역 저장 (클라이언트 측 기록용)
       const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
       inquiries.push({
         ...form,
