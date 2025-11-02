@@ -112,7 +112,7 @@ export default function CategoryPage() {
             {/* 로고 */}
             <Link
               href="/"
-              className="group relative flex items-center gap-2.5 py-2"
+              className="group relative flex items-center gap-2.5 py-2 focus:outline-none"
             >
               {/* 로고 아이콘 */}
               <div className="relative flex-shrink-0">
