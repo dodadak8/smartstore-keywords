@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react';
 const banners = [
   {
     id: 1,
-    title: "스마트스토어 판매 최적화가 처음이신가요?",
+    title: "스마트스토어 판매 최적화가\n처음이신가요?",
     subtitle: "파워셀러",
     description: "키워드 리서치부터 상품명 생성, 카테고리 추천까지 모든 기능을 무료로 이용하세요",
     gradient: "from-blue-600 to-purple-600",
@@ -250,7 +250,7 @@ export default function Home() {
                   </div>
 
                   {/* 메인 카피 */}
-                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-5 leading-tight px-4">
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-5 leading-tight px-4 whitespace-pre-line">
                     {banner.title}
                   </h1>
 
