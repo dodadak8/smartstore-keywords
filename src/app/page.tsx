@@ -126,8 +126,8 @@ export default function Home() {
               className="group relative flex items-center gap-2.5 py-2 focus:outline-none"
             >
               {/* 로고 아이콘 */}
-              <div className="relative flex-shrink-0">
-                <div className="w-9 h-9 bg-gradient-to-br from-white to-blue-100 rounded-xl shadow-md group-hover:shadow-lg transition-all duration-300 flex items-center justify-center transform group-hover:scale-105">
+              <div className="relative flex-shrink-0 focus:outline-none">
+                <div className="w-9 h-9 bg-gradient-to-br from-white to-blue-100 rounded-xl shadow-md group-hover:shadow-lg transition-all duration-300 flex items-center justify-center transform group-hover:scale-105 focus:outline-none">
                   <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -235,33 +235,33 @@ export default function Home() {
                 </div>
 
                 {/* 메인 콘텐츠 */}
-                <div className="relative z-10 text-center px-4 py-20 sm:py-32 max-w-5xl mx-auto">
+                <div className="relative z-10 text-center px-6 py-24 sm:py-32 max-w-5xl mx-auto">
                   {/* 로고 아이콘 */}
-                  <div className="flex justify-center mb-8 sm:mb-12">
+                  <div className="flex justify-center mb-6 sm:mb-10">
                     <div className="relative">
-                      <div className={`w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gradient-to-br ${banner.gradient} rounded-3xl shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300`}>
-                        <svg className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className={`w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 bg-gradient-to-br ${banner.gradient} rounded-3xl shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300`}>
+                        <svg className="w-10 h-10 sm:w-14 sm:h-14 md:w-18 md:h-18 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                       </div>
                       {/* 장식 요소 */}
-                      <div className="absolute -top-2 -right-2 w-4 h-4 sm:w-6 sm:h-6 bg-yellow-400 rounded-full animate-pulse"></div>
+                      <div className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 sm:w-5 sm:h-5 bg-yellow-400 rounded-full animate-pulse"></div>
                     </div>
                   </div>
 
                   {/* 메인 카피 */}
-                  <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-5 leading-tight px-4">
                     {banner.title}
                   </h1>
 
-                  <p className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-4 px-2">
+                  <p className="text-lg sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 px-4">
                     <span className={`bg-gradient-to-r ${banner.gradient} bg-clip-text text-transparent`}>
                       {banner.subtitle}
                     </span>
                     {index === 0 && <span className="text-gray-900">에서 차근차근 배워가세요.</span>}
                   </p>
 
-                  <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-12 max-w-3xl mx-auto px-4">
+                  <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 sm:mb-10 max-w-3xl mx-auto px-6">
                     {banner.description}
                   </p>
 

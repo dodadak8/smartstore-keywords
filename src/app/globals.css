@@ -112,10 +112,19 @@ body {
  * 접근성 개선
  */
 
-/* 포커스 표시 개선 */
-*:focus {
+/* 포커스 표시 개선 - 버튼과 입력 요소만 */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+}
+
+/* 링크와 로고는 outline 제거 */
+a:focus,
+a:focus-visible {
+  outline: none;
 }
 
 /* 스크린 리더 전용 텍스트 */
