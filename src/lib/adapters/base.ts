@@ -11,6 +11,7 @@ import {
   SystemSettings,
   Inquiry,
   FavoriteKeyword,
+  SearchHistory,
   PaginatedResult,
   KeywordFilters,
   KeywordSortOptions,
@@ -123,6 +124,38 @@ export abstract class BaseDataAdapter implements DataAdapter {
    * @returns 즐겨찾기 여부
    */
   abstract isFavorite(keywordId: string): Promise<boolean>;
+
+  // ========================================
+  // 검색 기록 관련 추상 메서드들
+  // ========================================
+
+  /**
+   * 검색 기록 목록 조회
+   * @param pagination 페이지네이션 설정 (선택사항)
+   * @returns 페이지네이션된 검색 기록 목록
+   */
+  abstract getSearchHistory(pagination?: PaginationParams): Promise<PaginatedResult<SearchHistory>>;
+
+  /**
+   * 검색 기록 추가/업데이트
+   * @param searchTerm 검색어
+   * @param resultsCount 검색 결과 개수 (선택사항)
+   * @returns 생성/업데이트된 검색 기록 데이터
+   */
+  abstract addSearchHistory(searchTerm: string, resultsCount?: number): Promise<SearchHistory>;
+
+  /**
+   * 모든 검색 기록 삭제
+   * @returns 삭제 성공 여부
+   */
+  abstract clearSearchHistory(): Promise<boolean>;
+
+  /**
+   * 특정 검색 기록 삭제
+   * @param id 검색 기록 ID
+   * @returns 삭제 성공 여부
+   */
+  abstract deleteSearchHistoryItem(id: string): Promise<boolean>;
 
   // ========================================
   // 프로젝트 관련 추상 메서드들

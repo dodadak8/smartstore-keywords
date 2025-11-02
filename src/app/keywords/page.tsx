@@ -10,7 +10,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { Keyword, KeywordFilters, KeywordSortOptions, KeywordTag } from '@/lib/types';
+import { Keyword, KeywordFilters, KeywordSortOptions, KeywordTag, SearchHistory } from '@/lib/types';
 import { getDataAdapter } from '@/lib/adapters';
 import { KeywordScorer } from '@/lib/algorithms';
 
@@ -23,6 +23,8 @@ export default function KeywordsPage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [favorites, setFavorites] = useState<Set<string>>(new Set()); // 즐겨찾기 키워드 ID 목록
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false); // 즐겨찾기만 보기 필터
+  const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]); // 검색 기록
+  const [showSearchHistory, setShowSearchHistory] = useState(false); // 검색 기록 드롭다운 표시 여부
 
   // 마우스 트래킹
   useEffect(() => {
@@ -67,6 +69,68 @@ export default function KeywordsPage() {
   useEffect(() => {
     loadFavorites();
   }, [loadFavorites]);
+
+  // 검색 기록 로드
+  const loadSearchHistory = useCallback(async () => {
+    try {
+      const adapter = await getDataAdapter();
+      const result = await adapter.getSearchHistory({ page: 1, limit: 10 });
+      setSearchHistory(result.items);
+    } catch (err) {
+      console.error('검색 기록 로드 실패:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadSearchHistory();
+  }, [loadSearchHistory]);
+
+  // 검색어 변경 핸들러 (검색 기록 저장)
+  const handleSearchChange = async (searchTerm: string) => {
+    setFilters({ ...filters, search: searchTerm || undefined });
+
+    // 검색어가 있고 엔터 키를 누르면 검색 기록에 추가
+    if (searchTerm && searchTerm.trim() !== '') {
+      try {
+        const adapter = await getDataAdapter();
+        await adapter.addSearchHistory(searchTerm.trim(), keywords.length);
+        loadSearchHistory();
+      } catch (err) {
+        console.error('검색 기록 저장 실패:', err);
+      }
+    }
+  };
+
+  // 검색 기록 항목 클릭
+  const handleHistoryItemClick = (searchTerm: string) => {
+    setFilters({ ...filters, search: searchTerm });
+    setShowSearchHistory(false);
+    handleSearchChange(searchTerm);
+  };
+
+  // 검색 기록 삭제
+  const deleteHistoryItem = async (id: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    try {
+      const adapter = await getDataAdapter();
+      await adapter.deleteSearchHistoryItem(id);
+      loadSearchHistory();
+    } catch (err) {
+      console.error('검색 기록 삭제 실패:', err);
+    }
+  };
+
+  // 전체 검색 기록 삭제
+  const clearAllHistory = async () => {
+    try {
+      const adapter = await getDataAdapter();
+      await adapter.clearSearchHistory();
+      setSearchHistory([]);
+      setShowSearchHistory(false);
+    } catch (err) {
+      console.error('검색 기록 전체 삭제 실패:', err);
+    }
+  };
 
   // 즐겨찾기 토글
   const toggleFavorite = async (keywordId: string) => {
@@ -326,15 +390,77 @@ export default function KeywordsPage() {
                 <option value="asc">오름차순</option>
               </select>
             </div>
-            <div>
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">검색</label>
-              <input
-                type="text"
-                placeholder="키워드 검색..."
-                value={filters.search || ''}
-                onChange={(e) => setFilters({ ...filters, search: e.target.value || undefined })}
-                className="form-input"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="키워드 검색..."
+                  value={filters.search || ''}
+                  onChange={(e) => setFilters({ ...filters, search: e.target.value || undefined })}
+                  onFocus={() => setShowSearchHistory(true)}
+                  onBlur={() => setTimeout(() => setShowSearchHistory(false), 200)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && filters.search) {
+                      handleSearchChange(filters.search);
+                    }
+                  }}
+                  className="form-input pr-10"
+                />
+                {filters.search && (
+                  <button
+                    onClick={() => setFilters({ ...filters, search: undefined })}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {/* 검색 기록 드롭다운 */}
+              {showSearchHistory && searchHistory.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-64 overflow-y-auto">
+                  <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200">
+                    <span className="text-xs font-semibold text-gray-500 uppercase">최근 검색</span>
+                    <button
+                      onClick={clearAllHistory}
+                      className="text-xs text-red-500 hover:text-red-700 transition-colors"
+                    >
+                      전체 삭제
+                    </button>
+                  </div>
+                  {searchHistory.map((history) => (
+                    <div
+                      key={history.id}
+                      onClick={() => handleHistoryItemClick(history.search_term)}
+                      className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors group"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-400 text-sm">🕐</span>
+                          <span className="text-sm font-medium text-gray-700 truncate">{history.search_term}</span>
+                        </div>
+                        <div className="flex items-center gap-3 mt-1">
+                          <span className="text-xs text-gray-400">
+                            검색 {history.search_count}회
+                          </span>
+                          {history.results_count !== undefined && (
+                            <span className="text-xs text-gray-400">
+                              결과 {history.results_count}개
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={(e) => deleteHistoryItem(history.id, e)}
+                        className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all ml-2"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ import {
   SystemSettings,
   Inquiry,
   FavoriteKeyword,
+  SearchHistory,
   PaginatedResult,
   KeywordFilters,
   KeywordSortOptions,
@@ -32,6 +33,7 @@ const STORAGE_KEYS = {
   SETTINGS: 'smartstore_settings',
   INQUIRIES: 'smartstore_inquiries',
   FAVORITES: 'smartstore_favorites',
+  SEARCH_HISTORY: 'smartstore_search_history',
   VERSION: 'smartstore_version', // 데이터 버전 관리용
 } as const;
 
@@ -287,6 +289,107 @@ export class LocalStorageAdapter extends BaseDataAdapter {
   async isFavorite(keywordId: string): Promise<boolean> {
     const favorites = this.loadFromStorage<FavoriteKeyword[]>(STORAGE_KEYS.FAVORITES) || [];
     return favorites.some(fav => fav.keyword_id === keywordId);
+  }
+
+  // ========================================
+  // 검색 기록 관련 메서드 구현
+  // ========================================
+
+  /**
+   * 검색 기록 목록 조회
+   */
+  async getSearchHistory(pagination?: PaginationParams): Promise<PaginatedResult<SearchHistory>> {
+    const history = this.loadFromStorage<SearchHistory[]>(STORAGE_KEYS.SEARCH_HISTORY) || [];
+
+    // 최근 검색순으로 정렬 (last_searched_at 기준 내림차순)
+    const sortedHistory = history.sort((a, b) =>
+      new Date(b.last_searched_at).getTime() - new Date(a.last_searched_at).getTime()
+    );
+
+    const page = pagination?.page || 1;
+    const limit = pagination?.limit || 50; // 검색 기록은 최대 50개까지 표시
+
+    return this.paginateArray(sortedHistory, page, limit);
+  }
+
+  /**
+   * 검색 기록 추가/업데이트
+   * - 같은 검색어가 있으면 카운트와 시간만 업데이트
+   * - 없으면 새로 추가
+   */
+  async addSearchHistory(searchTerm: string, resultsCount?: number): Promise<SearchHistory> {
+    if (!searchTerm || searchTerm.trim() === '') {
+      throw new ValidationError('검색어는 비어있을 수 없습니다.');
+    }
+
+    const history = this.loadFromStorage<SearchHistory[]>(STORAGE_KEYS.SEARCH_HISTORY) || [];
+
+    // 동일한 검색어가 이미 존재하는지 확인
+    const existingHistory = history.find(h => h.search_term === searchTerm.trim());
+
+    if (existingHistory) {
+      // 기존 검색 기록 업데이트
+      existingHistory.search_count += 1;
+      existingHistory.last_searched_at = new Date().toISOString();
+      existingHistory.updated_at = new Date().toISOString();
+      if (resultsCount !== undefined) {
+        existingHistory.results_count = resultsCount;
+      }
+      this.saveToStorage(STORAGE_KEYS.SEARCH_HISTORY, history);
+      return existingHistory;
+    }
+
+    // 새 검색 기록 생성
+    const newHistory: SearchHistory = {
+      id: `search_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      search_term: searchTerm.trim(),
+      search_count: 1,
+      last_searched_at: new Date().toISOString(),
+      results_count: resultsCount,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    history.push(newHistory);
+
+    // 검색 기록이 너무 많아지면 오래된 것부터 삭제 (최대 100개 유지)
+    if (history.length > 100) {
+      const sortedByDate = history.sort((a, b) =>
+        new Date(a.last_searched_at).getTime() - new Date(b.last_searched_at).getTime()
+      );
+      // 가장 오래된 것들 삭제
+      sortedByDate.splice(0, history.length - 100);
+      this.saveToStorage(STORAGE_KEYS.SEARCH_HISTORY, sortedByDate);
+    } else {
+      this.saveToStorage(STORAGE_KEYS.SEARCH_HISTORY, history);
+    }
+
+    return newHistory;
+  }
+
+  /**
+   * 모든 검색 기록 삭제
+   */
+  async clearSearchHistory(): Promise<boolean> {
+    this.saveToStorage(STORAGE_KEYS.SEARCH_HISTORY, []);
+    return true;
+  }
+
+  /**
+   * 특정 검색 기록 삭제
+   */
+  async deleteSearchHistoryItem(id: string): Promise<boolean> {
+    const history = this.loadFromStorage<SearchHistory[]>(STORAGE_KEYS.SEARCH_HISTORY) || [];
+    const historyIndex = history.findIndex(h => h.id === id);
+
+    if (historyIndex === -1) {
+      return false;
+    }
+
+    history.splice(historyIndex, 1);
+    this.saveToStorage(STORAGE_KEYS.SEARCH_HISTORY, history);
+
+    return true;
   }
 
   // ========================================

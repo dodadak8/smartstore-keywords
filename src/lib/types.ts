@@ -67,6 +67,17 @@ export interface FavoriteKeyword extends BaseEntity {
 }
 
 /**
+ * 검색 기록
+ * - 사용자가 검색한 키워드 히스토리
+ */
+export interface SearchHistory extends BaseEntity {
+  search_term: string; // 검색어
+  search_count: number; // 검색 횟수
+  last_searched_at: string; // 마지막 검색 일시
+  results_count?: number; // 검색 결과 개수
+}
+
+/**
  * 키워드 데이터 모델
  * - 키워드 리서치 보드에서 사용하는 핵심 데이터
  */
@@ -353,7 +364,13 @@ export interface DataAdapter {
   addFavorite(keywordId: string, notes?: string): Promise<FavoriteKeyword>;
   removeFavorite(keywordId: string): Promise<boolean>;
   isFavorite(keywordId: string): Promise<boolean>;
-  
+
+  // 검색 기록 관련 메서드
+  getSearchHistory(pagination?: PaginationParams): Promise<PaginatedResult<SearchHistory>>;
+  addSearchHistory(searchTerm: string, resultsCount?: number): Promise<SearchHistory>;
+  clearSearchHistory(): Promise<boolean>;
+  deleteSearchHistoryItem(id: string): Promise<boolean>;
+
   // 프로젝트 관련 메서드
   getProjects(pagination?: PaginationParams): Promise<PaginatedResult<Project>>;
   getProject(id: string): Promise<Project | null>;
