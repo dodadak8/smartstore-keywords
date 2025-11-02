@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { Keyword, KeywordFilters, KeywordSortOptions, KeywordTag, SearchHistory } from '@/lib/types';
 import { getDataAdapter } from '@/lib/adapters';
 import { KeywordScorer } from '@/lib/algorithms';
+import { CSVExporter } from '@/lib/utils/csv-parser';
 
 export default function KeywordsPage() {
   const [keywords, setKeywords] = useState<Keyword[]>([]);
@@ -191,18 +192,45 @@ export default function KeywordsPage() {
       setLoading(true);
       const scorer = new KeywordScorer({ volume: 0.7, competition: 0.3, tag: 0.1 });
       const scoredKeywords = scorer.calculateScores(keywords);
-      
+
       const adapter = await getDataAdapter();
       for (const keyword of scoredKeywords) {
         await adapter.updateKeyword(keyword.id, { score: keyword.score });
       }
-      
+
       await loadKeywords();
     } catch (err) {
       setError('점수 계산에 실패했습니다.');
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // CSV 다운로드
+  const downloadCSV = () => {
+    try {
+      // 필터링된 키워드만 내보내기
+      const filteredKeywords = showFavoritesOnly
+        ? keywords.filter(k => favorites.has(k.id))
+        : keywords;
+
+      if (filteredKeywords.length === 0) {
+        setError('다운로드할 키워드가 없습니다.');
+        return;
+      }
+
+      // CSV 생성 및 다운로드
+      const csvContent = CSVExporter.exportKeywords(filteredKeywords, true);
+      const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const filename = showFavoritesOnly
+        ? `keywords_favorites_${timestamp}.csv`
+        : `keywords_all_${timestamp}.csv`;
+
+      CSVExporter.downloadCSV(csvContent, filename);
+    } catch (err) {
+      setError('CSV 다운로드에 실패했습니다.');
+      console.error(err);
     }
   };
 
@@ -321,6 +349,19 @@ export default function KeywordsPage() {
               className="group relative overflow-hidden bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/30"
             >
               <span className="relative z-10">점수 계산하기</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </button>
+            <button
+              onClick={downloadCSV}
+              disabled={loading || keywords.length === 0}
+              className="group relative overflow-hidden bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-purple-600 hover:to-pink-700 disabled:opacity-50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/30"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                CSV 다운로드
+              </span>
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </button>
             <button
