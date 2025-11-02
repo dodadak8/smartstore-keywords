@@ -377,59 +377,23 @@ export default function ChecklistPage() {
         </div>
       </nav>
 
-      <main>
-        {/* Apple 스타일 히어로 섹션 */}
-        <div className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-50 via-white to-emerald-50 pt-16">
-          {/* 배경 장식 요소 */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-400/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-            <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-emerald-400/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-            <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-teal-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
-          </div>
-
-          {/* 메인 콘텐츠 */}
-          <div className="relative z-10 text-center px-4 py-20 max-w-5xl mx-auto">
-            {/* 로고 아이콘 */}
-            <div className="flex justify-center mb-8">
-              <div className="relative">
-                <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-green-600 to-emerald-600 rounded-3xl shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
-                  <svg className="w-12 h-12 md:w-16 md:h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full animate-pulse"></div>
-              </div>
-            </div>
-
-            {/* 배지 */}
-            <div className="inline-flex items-center px-5 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-green-200/50 mb-6 shadow-lg">
-              <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-              <span className="text-sm font-semibold text-green-600">품질 점검 시스템</span>
-            </div>
-
-            {/* 메인 타이틀 */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              품질 점검 체크리스트
-            </h1>
-
-            {/* 서브타이틀 */}
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              상품 등록 전 필수 항목을 체크하고<br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-semibold"> AI가 최종 품질 점수</span>를 산출해드립니다
-            </p>
-
-            {/* 스크롤 힌트 */}
-            <div className="mt-12 animate-bounce">
-              <svg className="w-6 h-6 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
+      <main className="container mx-auto px-6 py-8" style={{paddingTop: '100px'}}>
+        {/* 페이지 헤더 */}
+        <div className="text-center mb-12">
+          <h1
+            className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent mb-4 hover:scale-105 transition-transform duration-300"
+            style={{
+              textShadow: '0 0 30px rgba(59, 130, 246, 0.3)'
+            }}
+          >
+            품질 점검 체크리스트
+          </h1>
+          <p className="text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed">
+            상품 등록 전 필수 항목을 체크하고 AI가 최종 품질 점수를 산출해드립니다
+          </p>
         </div>
 
-        <div className="container mx-auto px-6 py-12">
+        <div className="py-12">
 
         <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* 왼쪽: 체크리스트 */}
