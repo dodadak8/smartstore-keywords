@@ -10,10 +10,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Keyword, KeywordFilters, KeywordSortOptions, KeywordTag, SearchHistory } from '@/lib/types';
 import { getDataAdapter } from '@/lib/adapters';
 import { KeywordScorer } from '@/lib/algorithms';
 import { CSVExporter } from '@/lib/utils/csv-parser';
+import { createClient } from '@/lib/supabase/client';
 
 export default function KeywordsPage() {
   const [keywords, setKeywords] = useState<Keyword[]>([]);
@@ -26,6 +28,31 @@ export default function KeywordsPage() {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false); // 즐겨찾기만 보기 필터
   const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]); // 검색 기록
   const [showSearchHistory, setShowSearchHistory] = useState(false); // 검색 기록 드롭다운 표시 여부
+  const [user, setUser] = useState<{ email?: string } | null>(null); // 사용자 정보
+
+  const router = useRouter();
+
+  // 사용자 정보 로드
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // 로그아웃
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push('/');
+  };
 
   // 마우스 트래킹
   useEffect(() => {
@@ -296,14 +323,34 @@ export default function KeywordsPage() {
                 카테고리 추천
               </Link>
               
-              <Link 
-                href="/checklist" 
+              <Link
+                href="/checklist"
                 className="px-4 py-2 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-200 text-sm"
               >
                 품질 점검
               </Link>
+
+              {/* 로그인/로그아웃 버튼 */}
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-white/80 text-sm">{user.email}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 rounded-lg bg-red-500/80 text-white font-medium hover:bg-red-600 transition-all duration-200 text-sm"
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="px-4 py-2 rounded-lg bg-white/20 text-white font-medium hover:bg-white/30 transition-all duration-200 text-sm"
+                >
+                  로그인
+                </Link>
+              )}
             </div>
-            
+
             {/* 모바일 메뉴 버튼 */}
             <div className="md:hidden">
               <button className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-all duration-200">
