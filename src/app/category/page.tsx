@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { Keyword, ProductTitleComponents, CategoryAttribute } from '@/lib/types';
 import { getDataAdapter } from '@/lib/adapters';
 import { CategoryRecommender, CategoryRecommendationDetail } from '@/lib/algorithms';
+import AuthButton from '@/components/AuthButton';
 
 export default function CategoryPage() {
   const [keywords, setKeywords] = useState<Keyword[]>([]);
@@ -158,12 +159,14 @@ export default function CategoryPage() {
                 카테고리 추천
               </Link>
               
-              <Link 
-                href="/checklist" 
+              <Link
+                href="/checklist"
                 className="px-4 py-2 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-200 text-sm"
               >
                 품질 점검
               </Link>
+
+              <AuthButton />
             </div>
             
             {/* 모바일 메뉴 버튼 */}

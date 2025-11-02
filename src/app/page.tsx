@@ -9,6 +9,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
+import AuthButton from '@/components/AuthButton';
 
 // 배너 데이터
 const banners = [
@@ -148,33 +149,35 @@ export default function Home() {
 
             {/* 데스크톱 네비게이션 메뉴 */}
             <div className="hidden md:flex items-center space-x-2">
-              <Link 
-                href="/keywords" 
+              <Link
+                href="/keywords"
                 className="px-4 py-2 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-200 text-sm"
               >
                 키워드 리서치
               </Link>
-              
-              <Link 
-                href="/titles" 
+
+              <Link
+                href="/titles"
                 className="px-4 py-2 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-200 text-sm"
               >
                 상품명 생성
               </Link>
-              
-              <Link 
-                href="/category" 
+
+              <Link
+                href="/category"
                 className="px-4 py-2 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-200 text-sm"
               >
                 카테고리 추천
               </Link>
-              
-              <Link 
-                href="/checklist" 
+
+              <Link
+                href="/checklist"
                 className="px-4 py-2 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-200 text-sm"
               >
                 품질 점검
               </Link>
+
+              <AuthButton />
             </div>
             
             {/* 모바일 메뉴 버튼 */}
