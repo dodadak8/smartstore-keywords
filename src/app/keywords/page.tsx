@@ -21,6 +21,8 @@ export default function KeywordsPage() {
   const [filters, setFilters] = useState<KeywordFilters>({});
   const [sortBy, setSortBy] = useState<KeywordSortOptions>({ sortBy: 'score', order: 'desc' });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [favorites, setFavorites] = useState<Set<string>>(new Set()); // 즐겨찾기 키워드 ID 목록
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false); // 즐겨찾기만 보기 필터
 
   // 마우스 트래킹
   useEffect(() => {
@@ -49,6 +51,45 @@ export default function KeywordsPage() {
   useEffect(() => {
     loadKeywords();
   }, [loadKeywords]);
+
+  // 즐겨찾기 로드
+  const loadFavorites = useCallback(async () => {
+    try {
+      const adapter = await getDataAdapter();
+      const result = await adapter.getFavorites();
+      const favoriteIds = new Set(result.items.map(fav => fav.keyword_id));
+      setFavorites(favoriteIds);
+    } catch (err) {
+      console.error('즐겨찾기 로드 실패:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadFavorites();
+  }, [loadFavorites]);
+
+  // 즐겨찾기 토글
+  const toggleFavorite = async (keywordId: string) => {
+    try {
+      const adapter = await getDataAdapter();
+      const isFav = favorites.has(keywordId);
+
+      if (isFav) {
+        await adapter.removeFavorite(keywordId);
+        setFavorites(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(keywordId);
+          return newSet;
+        });
+      } else {
+        await adapter.addFavorite(keywordId);
+        setFavorites(prev => new Set(prev).add(keywordId));
+      }
+    } catch (err) {
+      console.error('즐겨찾기 토글 실패:', err);
+      setError('즐겨찾기 변경에 실패했습니다.');
+    }
+  };
 
   // 샘플 데이터 추가
   const addSampleData = async () => {
@@ -241,7 +282,24 @@ export default function KeywordsPage() {
 
         {/* 필터 및 정렬 */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl p-8 mb-8 hover:bg-white/90 transition-all duration-300">
-          <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-6">필터 및 정렬</h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">필터 및 정렬</h3>
+            {/* 즐겨찾기만 보기 토글 */}
+            <label className="flex items-center cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={showFavoritesOnly}
+                onChange={(e) => setShowFavoritesOnly(e.target.checked)}
+                className="sr-only"
+              />
+              <div className={`relative w-14 h-7 rounded-full transition-colors duration-300 ${showFavoritesOnly ? 'bg-gradient-to-r from-yellow-400 to-orange-500' : 'bg-gray-300'}`}>
+                <div className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full transition-transform duration-300 ${showFavoritesOnly ? 'translate-x-7' : 'translate-x-0'} shadow-lg`}></div>
+              </div>
+              <span className={`ml-3 font-medium transition-colors ${showFavoritesOnly ? 'text-orange-600' : 'text-gray-600'}`}>
+                ⭐ 즐겨찾기만 보기 ({favorites.size})
+              </span>
+            </label>
+          </div>
           <div className="grid md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">정렬 기준</label>
@@ -284,7 +342,10 @@ export default function KeywordsPage() {
         {/* 키워드 목록 */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl hover:bg-white/90 transition-all duration-300">
           <div className="p-8 border-b border-gray-200/50">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">키워드 목록 ({keywords.length}개)</h3>
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+              키워드 목록 ({showFavoritesOnly ? keywords.filter(k => favorites.has(k.id)).length : keywords.length}개)
+              {showFavoritesOnly && <span className="text-orange-500 ml-2">⭐ 즐겨찾기만 표시 중</span>}
+            </h3>
           </div>
           
           {loading ? (
@@ -312,6 +373,9 @@ export default function KeywordsPage() {
               <table className="w-full">
                 <thead className="bg-gradient-to-r from-gray-50 to-blue-50">
                   <tr>
+                    <th className="px-4 py-4 text-center text-sm font-bold text-gray-700 uppercase tracking-wider w-16">
+                      ⭐
+                    </th>
                     <th className="px-8 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
                       키워드
                     </th>
@@ -333,8 +397,21 @@ export default function KeywordsPage() {
                   </tr>
                 </thead>
                 <tbody className="bg-white/50 divide-y divide-gray-200/50">
-                  {keywords.map((keyword) => (
+                  {keywords.filter(keyword => !showFavoritesOnly || favorites.has(keyword.id)).map((keyword) => (
                     <tr key={keyword.id} className="hover:bg-white/80 hover:shadow-md transition-all duration-200">
+                      <td className="px-4 py-6 text-center">
+                        <button
+                          onClick={() => toggleFavorite(keyword.id)}
+                          className={`text-2xl transition-all duration-300 transform hover:scale-125 ${
+                            favorites.has(keyword.id)
+                              ? 'hover:rotate-12 filter drop-shadow-lg'
+                              : 'opacity-30 hover:opacity-100 grayscale hover:grayscale-0'
+                          }`}
+                          title={favorites.has(keyword.id) ? '즐겨찾기 제거' : '즐겨찾기 추가'}
+                        >
+                          {favorites.has(keyword.id) ? '⭐' : '☆'}
+                        </button>
+                      </td>
                       <td className="px-8 py-6 whitespace-nowrap">
                         <div className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors">{keyword.term}</div>
                       </td>

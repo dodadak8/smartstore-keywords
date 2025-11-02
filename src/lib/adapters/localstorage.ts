@@ -5,16 +5,17 @@
  * - 서버 없이 동작 가능하여 저비용 운영에 유리
  */
 
-import { 
-  BaseDataAdapter, 
-  ValidationError, 
-  NotFoundError 
+import {
+  BaseDataAdapter,
+  ValidationError,
+  NotFoundError
 } from './base';
 import {
   Keyword,
   Project,
   SystemSettings,
   Inquiry,
+  FavoriteKeyword,
   PaginatedResult,
   KeywordFilters,
   KeywordSortOptions,
@@ -30,6 +31,7 @@ const STORAGE_KEYS = {
   PROJECTS: 'smartstore_projects',
   SETTINGS: 'smartstore_settings',
   INQUIRIES: 'smartstore_inquiries',
+  FAVORITES: 'smartstore_favorites',
   VERSION: 'smartstore_version', // 데이터 버전 관리용
 } as const;
 
@@ -179,17 +181,114 @@ export class LocalStorageAdapter extends BaseDataAdapter {
   async deleteKeyword(id: string): Promise<boolean> {
     const keywords = this.loadFromStorage<Keyword[]>(STORAGE_KEYS.KEYWORDS) || [];
     const keywordIndex = keywords.findIndex(keyword => keyword.id === id);
-    
+
     if (keywordIndex === -1) {
       return false;
     }
-    
+
     keywords.splice(keywordIndex, 1);
     this.saveToStorage(STORAGE_KEYS.KEYWORDS, keywords);
-    
+
+    // 연관된 즐겨찾기도 삭제
+    await this.removeFavorite(id);
+
     return true;
   }
-  
+
+  // ========================================
+  // 즐겨찾기 관련 메서드 구현
+  // ========================================
+
+  /**
+   * 즐겨찾기 목록 조회
+   */
+  async getFavorites(pagination?: PaginationParams): Promise<PaginatedResult<FavoriteKeyword>> {
+    const favorites = this.loadFromStorage<FavoriteKeyword[]>(STORAGE_KEYS.FAVORITES) || [];
+
+    // 생성일 기준 내림차순 정렬 (최근 추가한 것부터)
+    const sortedFavorites = favorites.sort((a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+    const page = pagination?.page || 1;
+    const limit = pagination?.limit || 100; // 즐겨찾기는 한 번에 많이 표시
+
+    return this.paginateArray(sortedFavorites, page, limit);
+  }
+
+  /**
+   * 특정 키워드가 즐겨찾기에 있는지 확인 및 조회
+   */
+  async getFavorite(keywordId: string): Promise<FavoriteKeyword | null> {
+    const favorites = this.loadFromStorage<FavoriteKeyword[]>(STORAGE_KEYS.FAVORITES) || [];
+    return favorites.find(fav => fav.keyword_id === keywordId) || null;
+  }
+
+  /**
+   * 즐겨찾기 추가
+   */
+  async addFavorite(keywordId: string, notes?: string): Promise<FavoriteKeyword> {
+    // 키워드가 실제로 존재하는지 확인
+    const keyword = await this.getKeyword(keywordId);
+    if (!keyword) {
+      throw new NotFoundError(`키워드 ID '${keywordId}'를 찾을 수 없습니다.`);
+    }
+
+    const favorites = this.loadFromStorage<FavoriteKeyword[]>(STORAGE_KEYS.FAVORITES) || [];
+
+    // 이미 즐겨찾기에 있는지 확인
+    const existingFavorite = favorites.find(fav => fav.keyword_id === keywordId);
+    if (existingFavorite) {
+      // 이미 있으면 메모만 업데이트
+      if (notes !== undefined) {
+        existingFavorite.notes = notes;
+        existingFavorite.updated_at = new Date().toISOString();
+        this.saveToStorage(STORAGE_KEYS.FAVORITES, favorites);
+      }
+      return existingFavorite;
+    }
+
+    // 새 즐겨찾기 생성
+    const newFavorite: FavoriteKeyword = {
+      id: `fav_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      keyword_id: keywordId,
+      keyword: keyword,
+      notes: notes,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    favorites.push(newFavorite);
+    this.saveToStorage(STORAGE_KEYS.FAVORITES, favorites);
+
+    return newFavorite;
+  }
+
+  /**
+   * 즐겨찾기 제거
+   */
+  async removeFavorite(keywordId: string): Promise<boolean> {
+    const favorites = this.loadFromStorage<FavoriteKeyword[]>(STORAGE_KEYS.FAVORITES) || [];
+    const favoriteIndex = favorites.findIndex(fav => fav.keyword_id === keywordId);
+
+    if (favoriteIndex === -1) {
+      return false;
+    }
+
+    favorites.splice(favoriteIndex, 1);
+    this.saveToStorage(STORAGE_KEYS.FAVORITES, favorites);
+
+    return true;
+  }
+
+  /**
+   * 특정 키워드가 즐겨찾기인지 확인
+   */
+  async isFavorite(keywordId: string): Promise<boolean> {
+    const favorites = this.loadFromStorage<FavoriteKeyword[]>(STORAGE_KEYS.FAVORITES) || [];
+    return favorites.some(fav => fav.keyword_id === keywordId);
+  }
+
   // ========================================
   // 프로젝트 관련 메서드 구현
   // ========================================

@@ -46,7 +46,7 @@ export interface PaginatedResult<T> {
  * 키워드 태그 타입
  * - 키워드의 성격이나 특성을 분류하는 용도
  */
-export type KeywordTag = 
+export type KeywordTag =
   | 'seasonal' // 계절성
   | 'event' // 이벤트성
   | 'longtail' // 롱테일
@@ -55,6 +55,16 @@ export type KeywordTag =
   | 'category' // 카테고리
   | 'feature' // 특징/기능
   | 'custom'; // 사용자 정의
+
+/**
+ * 즐겨찾기 키워드
+ * - 사용자가 북마크한 키워드
+ */
+export interface FavoriteKeyword extends BaseEntity {
+  keyword_id: string; // 원본 키워드 ID
+  keyword: Keyword; // 키워드 전체 데이터
+  notes?: string; // 즐겨찾기 메모
+}
 
 /**
  * 키워드 데이터 모델
@@ -336,6 +346,13 @@ export interface DataAdapter {
   createKeyword(keyword: Omit<Keyword, 'id' | 'created_at' | 'updated_at'>): Promise<Keyword>;
   updateKeyword(id: string, updates: Partial<Keyword>): Promise<Keyword>;
   deleteKeyword(id: string): Promise<boolean>;
+
+  // 즐겨찾기 관련 메서드
+  getFavorites(pagination?: PaginationParams): Promise<PaginatedResult<FavoriteKeyword>>;
+  getFavorite(keywordId: string): Promise<FavoriteKeyword | null>;
+  addFavorite(keywordId: string, notes?: string): Promise<FavoriteKeyword>;
+  removeFavorite(keywordId: string): Promise<boolean>;
+  isFavorite(keywordId: string): Promise<boolean>;
   
   // 프로젝트 관련 메서드
   getProjects(pagination?: PaginationParams): Promise<PaginatedResult<Project>>;

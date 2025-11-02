@@ -4,12 +4,13 @@
  * - 어댑터 패턴을 통해 다양한 저장소(파일, 로컬스토리지, API 등)를 쉽게 교체 가능
  */
 
-import { 
-  DataAdapter, 
-  Keyword, 
-  Project, 
-  SystemSettings, 
+import {
+  DataAdapter,
+  Keyword,
+  Project,
+  SystemSettings,
   Inquiry,
+  FavoriteKeyword,
   PaginatedResult,
   KeywordFilters,
   KeywordSortOptions,
@@ -82,7 +83,47 @@ export abstract class BaseDataAdapter implements DataAdapter {
    * @returns 삭제 성공 여부
    */
   abstract deleteKeyword(id: string): Promise<boolean>;
-  
+
+  // ========================================
+  // 즐겨찾기 관련 추상 메서드들
+  // ========================================
+
+  /**
+   * 즐겨찾기 목록 조회
+   * @param pagination 페이지네이션 설정 (선택사항)
+   * @returns 페이지네이션된 즐겨찾기 목록
+   */
+  abstract getFavorites(pagination?: PaginationParams): Promise<PaginatedResult<FavoriteKeyword>>;
+
+  /**
+   * 특정 키워드의 즐겨찾기 조회
+   * @param keywordId 키워드 ID
+   * @returns 즐겨찾기 데이터 또는 null
+   */
+  abstract getFavorite(keywordId: string): Promise<FavoriteKeyword | null>;
+
+  /**
+   * 즐겨찾기 추가
+   * @param keywordId 키워드 ID
+   * @param notes 메모 (선택사항)
+   * @returns 생성된 즐겨찾기 데이터
+   */
+  abstract addFavorite(keywordId: string, notes?: string): Promise<FavoriteKeyword>;
+
+  /**
+   * 즐겨찾기 제거
+   * @param keywordId 키워드 ID
+   * @returns 삭제 성공 여부
+   */
+  abstract removeFavorite(keywordId: string): Promise<boolean>;
+
+  /**
+   * 키워드가 즐겨찾기인지 확인
+   * @param keywordId 키워드 ID
+   * @returns 즐겨찾기 여부
+   */
+  abstract isFavorite(keywordId: string): Promise<boolean>;
+
   // ========================================
   // 프로젝트 관련 추상 메서드들
   // ========================================
