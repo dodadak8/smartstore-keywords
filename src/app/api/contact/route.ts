@@ -37,8 +37,18 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+// 폼 데이터 타입 정의
+interface ContactFormData {
+  name: string;
+  email: string;
+  category: string;
+  subject: string;
+  message: string;
+  honeypot?: string;
+}
+
 // 폼 데이터 유효성 검증
-function validateFormData(data: any): { valid: boolean; errors: string[] } {
+function validateFormData(data: ContactFormData): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
   // 이름 검증
