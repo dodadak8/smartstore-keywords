@@ -12,6 +12,7 @@ import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Keyword, ProductTitle, KeywordTag } from '@/lib/types';
 import { getDataAdapter } from '@/lib/adapters';
+import Navigation from '@/components/Navigation';
 
 interface ExportData {
   keywords: Keyword[];
@@ -217,27 +218,9 @@ export default function ExportPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* 네비게이션 */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 backdrop-blur-xl border-b-4 border-white/30 shadow-2xl">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-black text-white hover:text-blue-100 transition-all duration-300 transform hover:scale-105 tracking-tight">
-              파워셀러
-            </Link>
-            <div className="flex space-x-2">
-              <Link href="/keywords" className="nav-link">키워드 리서치</Link>
-              <Link href="/titles" className="nav-link">상품명 생성</Link>
-              <Link href="/category" className="nav-link">카테고리 추천</Link>
-              <Link href="/checklist" className="nav-link">품질 점검</Link>
-              <Link href="/export" className="nav-link nav-link-active">내보내기</Link>
-              <Link href="/contact" className="nav-link">문의하기</Link>
-              <Link href="/privacy" className="nav-link">개인정보처리방침</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
-      <main className="container mx-auto px-6 py-8 pt-28">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-28">
         {/* 페이지 헤더 */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-6 shadow-2xl">

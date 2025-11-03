@@ -11,6 +11,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Navigation from '@/components/Navigation';
 
 interface ContactForm {
   name: string;
@@ -211,28 +212,10 @@ export default function ContactPage() {
   if (submitted) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-        {/* 네비게이션 */}
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 backdrop-blur-xl border-b-4 border-white/30 shadow-2xl">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <Link href="/" className="text-2xl font-black text-white hover:text-blue-100 transition-all duration-300 transform hover:scale-105 tracking-tight">
-                파워셀러
-              </Link>
-              <div className="flex space-x-2">
-                <Link href="/keywords" className="nav-link">키워드 리서치</Link>
-                <Link href="/titles" className="nav-link">상품명 생성</Link>
-                <Link href="/category" className="nav-link">카테고리 추천</Link>
-                <Link href="/checklist" className="nav-link">품질 점검</Link>
-                <Link href="/export" className="nav-link">내보내기</Link>
-                <Link href="/contact" className="nav-link nav-link-active">문의하기</Link>
-                <Link href="/privacy" className="nav-link">개인정보처리방침</Link>
-              </div>
-            </div>
-          </div>
-        </nav>
+        <Navigation />
 
         {/* 성공 메시지 */}
-        <main className="container mx-auto px-6 py-20 pt-32">
+        <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-32">
           <div className="max-w-md mx-auto text-center">
             <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-3xl p-10 shadow-2xl">
               <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
@@ -271,45 +254,27 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* 네비게이션 */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 backdrop-blur-xl border-b-4 border-white/30 shadow-2xl">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-black text-white hover:text-blue-100 transition-all duration-300 transform hover:scale-105 tracking-tight">
-              파워셀러
-            </Link>
-            <div className="flex space-x-2">
-              <Link href="/keywords" className="nav-link">키워드 리서치</Link>
-              <Link href="/titles" className="nav-link">상품명 생성</Link>
-              <Link href="/category" className="nav-link">카테고리 추천</Link>
-              <Link href="/checklist" className="nav-link">품질 점검</Link>
-              <Link href="/export" className="nav-link">내보내기</Link>
-              <Link href="/contact" className="nav-link nav-link-active">문의하기</Link>
-              <Link href="/privacy" className="nav-link">개인정보처리방침</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
-      <main className="container mx-auto px-6 py-8 pt-28">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-28">
         {/* 페이지 헤더 */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-6 shadow-2xl">
-            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center mb-8 sm:mb-12 px-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 sm:mb-6 shadow-2xl">
+            <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           </div>
-          <h1 className="text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent mb-3 sm:mb-4">
             문의하기
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
             서비스 이용 중 궁금한 점이나 제안사항이 있으시면 언제든지 문의해주세요
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 px-4">
           {/* 왼쪽: 문의 정보 */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-6 shadow-xl hover:shadow-2xl transition-all duration-300">
               <h2 className="text-xl font-bold mb-4 text-gray-800">빠른 도움말</h2>
               <div className="space-y-4">

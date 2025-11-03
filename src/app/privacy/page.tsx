@@ -10,56 +10,39 @@
 'use client';
 
 import Link from 'next/link';
+import Navigation from '@/components/Navigation';
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* 네비게이션 */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 backdrop-blur-xl border-b-4 border-white/30 shadow-2xl">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-black text-white hover:text-blue-100 transition-all duration-300 transform hover:scale-105 tracking-tight">
-              파워셀러
-            </Link>
-            <div className="flex space-x-2">
-              <Link href="/keywords" className="nav-link">키워드 리서치</Link>
-              <Link href="/titles" className="nav-link">상품명 생성</Link>
-              <Link href="/category" className="nav-link">카테고리 추천</Link>
-              <Link href="/checklist" className="nav-link">품질 점검</Link>
-              <Link href="/export" className="nav-link">내보내기</Link>
-              <Link href="/contact" className="nav-link">문의하기</Link>
-              <Link href="/privacy" className="nav-link nav-link-active">개인정보처리방침</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
-      <main className="container mx-auto px-6 py-8 pt-28">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-28">
         {/* 페이지 헤더 */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-6 shadow-2xl">
-            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center mb-8 sm:mb-12 px-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 sm:mb-6 shadow-2xl">
+            <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <h1 className="text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent mb-3 sm:mb-4">
             개인정보처리방침
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
             파워셀러 서비스의 개인정보 처리방침입니다
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 px-4">
           {/* 기본 정보 */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl">
-            <div className="flex items-center mb-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-6 sm:p-8 shadow-xl">
+            <div className="flex items-center mb-4 sm:mb-6">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">기본 정보</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">기본 정보</h2>
             </div>
             
             <div className="space-y-4 text-gray-700">
@@ -74,17 +57,17 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* 개인정보 수집 및 이용 */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl">
-            <div className="flex items-center mb-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-6 sm:p-8 shadow-xl">
+            <div className="flex items-center mb-4 sm:mb-6">
               <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-green-600 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m5-2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">개인정보 수집 및 이용</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">개인정보 수집 및 이용</h2>
             </div>
 
-            <div className="space-y-6 text-gray-700">
+            <div className="space-y-4 sm:space-y-6 text-sm sm:text-base text-gray-700">
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">1. 수집하는 개인정보의 항목</h3>
                 <div className="bg-blue-50 rounded-lg p-4">
@@ -120,17 +103,17 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* 개인정보 제3자 제공 */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl">
-            <div className="flex items-center mb-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-6 sm:p-8 shadow-xl">
+            <div className="flex items-center mb-4 sm:mb-6">
               <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">개인정보 제3자 제공</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">개인정보 제3자 제공</h2>
             </div>
 
-            <div className="text-gray-700">
+            <div className="text-sm sm:text-base text-gray-700">
               <p className="mb-4">
                 회사는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 
                 다만, 다음의 경우에는 예외로 합니다:
@@ -144,17 +127,17 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* 이용자의 권리 */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl">
-            <div className="flex items-center mb-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-6 sm:p-8 shadow-xl">
+            <div className="flex items-center mb-4 sm:mb-6">
               <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-orange-600 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">이용자의 권리와 의무</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">이용자의 권리와 의무</h2>
             </div>
 
-            <div className="space-y-6 text-gray-700">
+            <div className="space-y-4 sm:space-y-6 text-sm sm:text-base text-gray-700">
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">1. 이용자의 권리</h3>
                 <ul className="list-disc list-inside space-y-2">
@@ -178,17 +161,17 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* 개인정보 보호조치 */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl">
-            <div className="flex items-center mb-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-6 sm:p-8 shadow-xl">
+            <div className="flex items-center mb-4 sm:mb-6">
               <div className="w-8 h-8 bg-gradient-to-r from-red-400 to-red-600 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">개인정보 보호조치</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">개인정보 보호조치</h2>
             </div>
 
-            <div className="text-gray-700">
+            <div className="text-sm sm:text-base text-gray-700">
               <p className="mb-4">
                 회사는 개인정보보호법 제29조에 따라 다음과 같이 안전성 확보 조치를 취하고 있습니다:
               </p>
@@ -201,17 +184,17 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* 연락처 */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl">
-            <div className="flex items-center mb-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-6 sm:p-8 shadow-xl">
+            <div className="flex items-center mb-4 sm:mb-6">
               <div className="w-8 h-8 bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">개인정보 보호책임자</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">개인정보 보호책임자</h2>
             </div>
 
-            <div className="space-y-4 text-gray-700">
+            <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-gray-700">
               <p>
                 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
               </p>
@@ -227,13 +210,13 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* 정책 변경 */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-8 shadow-lg">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 sm:p-8 shadow-lg">
             <div className="flex items-center mb-4">
               <span className="text-2xl mr-3">📋</span>
               <h2 className="text-xl font-bold text-blue-900">정책 변경</h2>
             </div>
             
-            <div className="text-blue-700">
+            <div className="text-sm sm:text-base text-blue-700">
               <p className="mb-4">
                 이 개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.
               </p>

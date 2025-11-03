@@ -10,6 +10,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Navigation from '@/components/Navigation';
 
 type PolicyTab = 'terms' | 'privacy' | 'service';
 
@@ -24,43 +25,27 @@ export default function PolicyPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 네비게이션 */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold text-black hover:text-gray-800">
-              스마트스토어 키워드 최적화
-            </Link>
-            <div className="flex space-x-6">
-              <Link href="/keywords" className="text-gray-600 hover:text-black">키워드 리서치</Link>
-              <Link href="/titles" className="text-gray-600 hover:text-black">상품명 생성</Link>
-              <Link href="/category" className="text-gray-600 hover:text-black">카테고리 추천</Link>
-              <Link href="/checklist" className="text-gray-600 hover:text-black">품질 점검</Link>
-              <Link href="/contact" className="text-gray-600 hover:text-black">문의하기</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-28">
         {/* 페이지 헤더 */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-black mb-2">서비스 정책</h1>
-          <p className="text-gray-600">
+        <div className="mb-6 sm:mb-8 text-center px-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">서비스 정책</h1>
+          <p className="text-sm sm:text-base text-gray-600">
             스마트스토어 키워드 최적화 서비스 이용을 위한 약관 및 정책을 확인하세요
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto px-4">
           {/* 탭 네비게이션 */}
-          <div className="bg-white rounded-lg border border-gray-200 mb-8">
-            <div className="border-b border-gray-200">
-              <nav className="flex space-x-8 px-6" aria-label="Tabs">
+          <div className="bg-white rounded-lg border border-gray-200 mb-6 sm:mb-8">
+            <div className="border-b border-gray-200 overflow-x-auto">
+              <nav className="flex space-x-4 sm:space-x-8 px-4 sm:px-6 min-w-max sm:min-w-none" aria-label="Tabs">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
+                    className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
                       activeTab === tab.id
                         ? 'border-black text-black'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -74,15 +59,15 @@ export default function PolicyPage() {
               </nav>
             </div>
 
-            <div className="p-8">
+            <div className="p-4 sm:p-8">
               {/* 이용약관 */}
               {activeTab === 'terms' && (
                 <div className="prose max-w-none">
-                  <h2 className="text-2xl font-bold text-black mb-6">이용약관</h2>
-                  
-                  <div className="space-y-6 text-gray-700">
+                  <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">이용약관</h2>
+
+                  <div className="space-y-4 sm:space-y-6 text-xs sm:text-base text-gray-700">
                     <section>
-                      <h3 className="text-lg font-semibold text-black mb-3">제1조 (목적)</h3>
+                      <h3 className="text-base sm:text-lg font-semibold text-black mb-2 sm:mb-3">제1조 (목적)</h3>
                       <p>
                         이 약관은 스마트스토어 키워드 최적화 서비스(이하 &quot;서비스&quot;)의 이용과 관련하여 
                         서비스 제공자와 이용자 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
@@ -142,12 +127,12 @@ export default function PolicyPage() {
               {/* 개인정보처리방침 */}
               {activeTab === 'privacy' && (
                 <div className="prose max-w-none">
-                  <h2 className="text-2xl font-bold text-black mb-6">개인정보처리방침</h2>
-                  
-                  <div className="space-y-6 text-gray-700">
+                  <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">개인정보처리방침</h2>
+
+                  <div className="space-y-4 sm:space-y-6 text-xs sm:text-base text-gray-700">
                     <section>
-                      <h3 className="text-lg font-semibold text-black mb-3">1. 개인정보 수집 및 이용목적</h3>
-                      <div className="bg-gray-50 p-4 rounded-lg">
+                      <h3 className="text-base sm:text-lg font-semibold text-black mb-2 sm:mb-3">1. 개인정보 수집 및 이용목적</h3>
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-medium mb-2">문의 접수 및 처리</h4>
                         <ul className="list-disc list-inside space-y-1 text-sm">
                           <li>수집항목: 이름, 이메일, 문의내용</li>
@@ -221,11 +206,11 @@ export default function PolicyPage() {
               {/* 서비스 정책 */}
               {activeTab === 'service' && (
                 <div className="prose max-w-none">
-                  <h2 className="text-2xl font-bold text-black mb-6">서비스 정책</h2>
-                  
-                  <div className="space-y-6 text-gray-700">
+                  <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">서비스 정책</h2>
+
+                  <div className="space-y-4 sm:space-y-6 text-xs sm:text-base text-gray-700">
                     <section>
-                      <h3 className="text-lg font-semibold text-black mb-3">서비스 제공 방식</h3>
+                      <h3 className="text-base sm:text-lg font-semibold text-black mb-2 sm:mb-3">서비스 제공 방식</h3>
                       <ul className="list-disc list-inside space-y-2">
                         <li>웹 기반 서비스로 인터넷 연결 시 언제든 이용 가능</li>
                         <li>별도의 소프트웨어 설치 불필요</li>
@@ -235,10 +220,10 @@ export default function PolicyPage() {
                     </section>
 
                     <section>
-                      <h3 className="text-lg font-semibold text-black mb-3">데이터 저장 정책</h3>
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h4 className="font-medium text-blue-900 mb-2">🔐 데이터 보안</h4>
-                        <ul className="text-sm text-blue-800 space-y-1">
+                      <h3 className="text-base sm:text-lg font-semibold text-black mb-2 sm:mb-3">데이터 저장 정책</h3>
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+                        <h4 className="font-medium text-blue-900 mb-2 text-xs sm:text-sm">🔐 데이터 보안</h4>
+                        <ul className="text-xs sm:text-sm text-blue-800 space-y-1">
                           <li>• 키워드 데이터는 이용자의 브라우저에만 저장됩니다</li>
                           <li>• 서버로 전송되지 않아 완전한 프라이버시 보장</li>
                           <li>• CSV 내보내기를 통한 데이터 백업 권장</li>
@@ -258,20 +243,20 @@ export default function PolicyPage() {
                     </section>
 
                     <section>
-                      <h3 className="text-lg font-semibold text-black mb-3">지원 브라우저</h3>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                          <h4 className="font-medium text-green-900 mb-2">✅ 권장 브라우저</h4>
-                          <ul className="text-sm text-green-800 space-y-1">
+                      <h3 className="text-base sm:text-lg font-semibold text-black mb-2 sm:mb-3">지원 브라우저</h3>
+                      <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
+                          <h4 className="font-medium text-green-900 mb-2 text-xs sm:text-sm">✅ 권장 브라우저</h4>
+                          <ul className="text-xs sm:text-sm text-green-800 space-y-1">
                             <li>• Chrome 90 이상</li>
                             <li>• Firefox 88 이상</li>
                             <li>• Safari 14 이상</li>
                             <li>• Edge 90 이상</li>
                           </ul>
                         </div>
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                          <h4 className="font-medium text-yellow-900 mb-2">⚠️ 제한 브라우저</h4>
-                          <ul className="text-sm text-yellow-800 space-y-1">
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4">
+                          <h4 className="font-medium text-yellow-900 mb-2 text-xs sm:text-sm">⚠️ 제한 브라우저</h4>
+                          <ul className="text-xs sm:text-sm text-yellow-800 space-y-1">
                             <li>• Internet Explorer (지원 안함)</li>
                             <li>• 모바일 브라우저 일부 기능 제한</li>
                             <li>• 구버전 브라우저 성능 제한</li>
@@ -302,10 +287,10 @@ export default function PolicyPage() {
                     </section>
 
                     <section>
-                      <h3 className="text-lg font-semibold text-black mb-3">문의 및 지원</h3>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <p className="mb-2">서비스 이용 중 문의사항이 있으시면:</p>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
+                      <h3 className="text-base sm:text-lg font-semibold text-black mb-2 sm:mb-3">문의 및 지원</h3>
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                        <p className="mb-2 text-xs sm:text-sm">서비스 이용 중 문의사항이 있으시면:</p>
+                        <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm">
                           <li>문의 페이지를 통한 온라인 문의</li>
                           <li>일반적으로 24-48시간 내 답변</li>
                           <li>기술적 문제는 우선 처리</li>
@@ -319,9 +304,9 @@ export default function PolicyPage() {
           </div>
 
           {/* 하단 안내 */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 text-center">
-            <h3 className="text-lg font-semibold text-black mb-2">추가 문의사항이 있으신가요?</h3>
-            <p className="text-gray-600 mb-4">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 text-center">
+            <h3 className="text-base sm:text-lg font-semibold text-black mb-2">추가 문의사항이 있으신가요?</h3>
+            <p className="text-xs sm:text-base text-gray-600 mb-4">
               정책에 대한 문의나 서비스 이용 중 궁금한 점이 있으시면 언제든지 연락해주세요.
             </p>
             <Link
@@ -333,7 +318,7 @@ export default function PolicyPage() {
           </div>
 
           {/* 최종 업데이트 정보 */}
-          <div className="text-center text-sm text-gray-500 mt-6">
+          <div className="text-center text-xs sm:text-sm text-gray-500 mt-4 sm:mt-6">
             <p>최종 업데이트: 2025년 1월 1일</p>
             <p>이 정책은 지속적으로 개선되며, 변경 시 공지를 통해 안내드립니다.</p>
           </div>
