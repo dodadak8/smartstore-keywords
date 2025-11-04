@@ -256,7 +256,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <Navigation />
 
-      <main className="container mx-auto px-4 sm:px-6 py-8 pt-28 sm:pt-32 md:pt-36">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-32 sm:pt-36 md:pt-40">
         {/* 페이지 헤더 */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
           <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 sm:mb-6 shadow-2xl">
