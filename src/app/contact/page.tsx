@@ -256,9 +256,9 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <Navigation />
 
-      <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-28">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-28 sm:pt-32 md:pt-36">
         {/* 페이지 헤더 */}
-        <div className="text-center mb-8 sm:mb-12 px-4">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
           <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 sm:mb-6 shadow-2xl">
             <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />

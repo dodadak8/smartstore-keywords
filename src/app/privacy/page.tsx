@@ -17,9 +17,9 @@ export default function PrivacyPolicyPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <Navigation />
 
-      <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-28">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-28 sm:pt-32 md:pt-36">
         {/* 페이지 헤더 */}
-        <div className="text-center mb-8 sm:mb-12 px-4">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
           <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 sm:mb-6 shadow-2xl">
             <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -28,7 +28,7 @@ export default function PrivacyPolicyPage() {
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent mb-3 sm:mb-4">
             개인정보처리방침
           </h1>
-          <p className="text-sm sm:text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
             파워셀러 서비스의 개인정보 처리방침입니다
           </p>
         </div>

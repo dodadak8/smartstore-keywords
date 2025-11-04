@@ -27,11 +27,11 @@ export default function PolicyPage() {
     <div className="min-h-screen bg-gray-50">
       <Navigation />
 
-      <main className="container mx-auto px-4 sm:px-6 py-8 pt-24 sm:pt-28">
+      <main className="container mx-auto px-4 sm:px-6 py-8 pt-28 sm:pt-32 md:pt-36">
         {/* 페이지 헤더 */}
-        <div className="mb-6 sm:mb-8 text-center px-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">서비스 정책</h1>
-          <p className="text-sm sm:text-base text-gray-600">
+        <div className="mb-8 sm:mb-12 md:mb-16 text-center px-4">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-black mb-2">서비스 정책</h1>
+          <p className="text-sm sm:text-base md:text-xl text-gray-600 px-4">
             스마트스토어 키워드 최적화 서비스 이용을 위한 약관 및 정책을 확인하세요
           </p>
         </div>
